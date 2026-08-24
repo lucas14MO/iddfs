@@ -1,0 +1,20 @@
+start_watertank = 1000,
+max_instant_kW = 55,
+kWh_cost_gs = 900,
+max_energy_cost=280000,
+water_loss = 0.002,
+
+lazy
+-lvls(mm): 65.0, 58.0, 50.0
+-tank: 795.00 m^3
+-acc_cost: 20,075.00Gs
+
+proactive
+-lvls(mm): 133.0, 98.0, 50.0
+-tank: 55.00 m^3
+-acc_cost: 229,500.00Gs
+
+cost aware
+-lvls(mm): 116.0, 58.0, 98.0
+-tank: 60.00 m^3
+-acc_cost: 93,075.00Gs

@@ -1,15 +1,3 @@
-# Sectores
-# - Necesida de agua en cm de altura
-# - Metros cuadrados del inundacion de cultivo
-# - Bomba, con consumo energetico y suministro de agua (encendido/apagado)
-
-# Estado del Sistema
-# - Arreglo de necesidad de cada sector Necesidad
-# - Volumen de agua disponible(por sector)
-# - Estado de bomba de agua (por sector)
-# - Consumo total de electricidad en kWh
-# - Intervalo de tiempo actual
-
 from dataclasses import dataclass
 from typing import Callable
 
@@ -51,8 +39,9 @@ class State:
 
 @dataclass
 class Data:
-    start_watertank: int
-    max_instant_kW: int
+    max_t: int
+    start_watertank: float
+    max_instant_kW: float
     kWh_cost_gs: Callable[[int], float]
     max_energy_cost: float
     water_loss: float

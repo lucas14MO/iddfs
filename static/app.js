@@ -6,6 +6,23 @@ const buttonLabel = document.querySelector('#button-label');
 const alerts = document.querySelector('#alert-container');
 const historyKey = 'iddfs-irrigation-search-log';
 const tariffGrid = document.querySelector('#tariff-grid');
+const themeToggle = document.querySelector('#theme-toggle');
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+  themeToggle.querySelector('.theme-icon').textContent = isDark ? '☀' : '☾';
+  themeToggle.querySelector('.theme-label').textContent = isDark ? 'Modo claro' : 'Modo oscuro';
+  themeToggle.setAttribute('aria-label', isDark ? 'Activar modo claro' : 'Activar modo oscuro');
+  themeToggle.setAttribute('aria-pressed', String(isDark));
+}
+
+applyTheme(localStorage.getItem('iddfs-theme') || 'light');
+themeToggle.addEventListener('click', () => {
+  const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('iddfs-theme', nextTheme);
+  applyTheme(nextTheme);
+});
 const defaultTariff = [365, 365, 365, 365, 365, 365, 365, 365, 365, 450, 450, 450, 450, 450, 450, 800, 800, 800, 800, 800, 390, 390, 390, 390];
 
 const defaultSectors = [

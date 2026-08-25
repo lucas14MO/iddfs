@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#143642">
+  <meta name="theme-color" content="#0f2027">
   <title>Riego IDDFS | Secuenciador</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23e07a5f' d='M16 2c6 8 10 13.5 10 18.5A10 10 0 1 1 6 20.5C6 15.5 10 10 16 2Z'/%3E%3C/svg%3E">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/static/colors.css" rel="stylesheet">
   <link href="/static/styles.css" rel="stylesheet">
@@ -23,7 +24,7 @@
     <div class="container py-4">
       <div class="d-flex justify-content-between align-items-end gap-3 flex-wrap">
         <div>
-          <p class="eyebrow mb-2">CONTROL HIDRICO / IDDFS</p>
+          <p class="eyebrow mb-2">CONTROL HÍDRICO / IDDFS</p>
           <h1 class="display-6 mb-1">Secuenciador de riego</h1>
           <p class="header-copy mb-0">Planifica el uso de bombas por hora respetando agua, potencia y presupuesto.</p>
         </div>
@@ -137,7 +138,7 @@
   <div class="modal fade" id="results-modal" tabindex="-1" aria-labelledby="results-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen-xl-down modal-xl modal-dialog-scrollable">
       <div class="modal-content">
-        <div class="modal-header"><div><p class="eyebrow mb-1">DETALLE DE EJECUCIÓN</p><h2 class="modal-title h4" id="results-modal-title">Tabla completa</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+        <div class="modal-header justify-content-between"><div><p class="eyebrow mb-1">DETALLE DE EJECUCIÓN</p><h2 class="modal-title h4" id="results-modal-title">Tabla completa</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
         <div class="modal-body"><div class="table-responsive result-table-wrap"><table class="table align-middle mb-0"><thead><tr><th>Intervalo</th><th>Bombas</th><th>Potencia</th><th>Agua bombeada</th><th>Niveles por sector</th><th>Reserva</th><th>Costo acumulado</th></tr></thead><tbody id="modal-sequence-body"></tbody></table></div></div>
       </div>
     </div>
@@ -146,15 +147,32 @@
   <div class="modal fade" id="log-modal" tabindex="-1" aria-labelledby="log-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
-        <div class="modal-header"><div><p class="eyebrow mb-1">COMPARACIÓN</p><h2 class="modal-title h4" id="log-modal-title">Historial de búsquedas</h2></div><div class="d-flex align-items-center gap-3"><button class="btn btn-outline-danger btn-sm" id="clear-log" type="button">Borrar historial</button><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div></div>
-        <div class="modal-body"><div id="log-list" class="vstack gap-3"></div><div class="empty-log d-none" id="empty-log">Todavía no hay búsquedas guardadas.</div></div>
+        <div class="modal-header justify-content-between"><div><p class="eyebrow mb-1">COMPARACIÓN</p><h2 class="modal-title h4" id="log-modal-title">Historial de búsquedas</h2></div><div class="d-flex align-items-center gap-3"><button class="btn btn-outline-danger btn-sm" id="clear-log" type="button" disabled>Borrar historial</button><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div></div>
+        <div class="modal-body"><div id="log-list" class="vstack gap-3"></div><div class="empty-log d-none" id="empty-log"><div class="empty-icon mx-auto mb-2">⏲</div>Todavía no hay búsquedas guardadas.</div></div>
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="confirm-clear-modal" tabindex="-1" aria-labelledby="confirm-clear-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content confirm-modal">
+        <div class="modal-body text-center py-4">
+          <div class="empty-icon mx-auto mb-3">!</div>
+          <h2 class="h6 mb-2" id="confirm-clear-title">¿Borrar todo el historial?</h2>
+          <p class="helper-text mb-4">Esta acción elimina todas las búsquedas guardadas en este navegador y no se puede deshacer.</p>
+          <div class="d-flex justify-content-center gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger btn-sm" id="confirm-clear-log">Sí, borrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="tariff-modal" tabindex="-1" aria-labelledby="tariff-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
-        <div class="modal-header"><div><p class="eyebrow mb-1">CONFIGURACIÓN</p><h2 class="modal-title h4" id="tariff-modal-title">Tarifa por hora</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+        <div class="modal-header justify-content-between"><div><p class="eyebrow mb-1">CONFIGURACIÓN</p><h2 class="modal-title h4" id="tariff-modal-title">Tarifa por hora</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
         <div class="modal-body"><p class="helper-text mb-3">Define el costo de energía para cada hora del horizonte diario. Los valores se expresan en Gs/kWh.</p><div id="tariff-grid" class="row g-2"></div></div>
         <div class="modal-footer"><button class="btn btn-primary" id="save-tariff" type="button" data-bs-dismiss="modal">Guardar tarifa</button></div>
       </div>

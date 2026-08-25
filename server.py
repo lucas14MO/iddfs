@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import time
 from collections.abc import Sequence
 from enum import Enum
@@ -252,7 +253,8 @@ async def search_irrigation(request: IrrigationRequest) -> JSONResponse:
 	)
 	strategy = ActionStrategy[request.strategy.name]
 	start = time.perf_counter()
-	result = iddfs(
+	result = await asyncio.to_thread(
+		iddfs,
 		initial_state=initial_state,
 		is_goal=_is_goal(request.horizon_t),
 		get_successors=lambda state: get_successors(state, data, strategy),

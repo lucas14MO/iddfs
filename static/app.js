@@ -136,7 +136,9 @@ function savedSearches() {
   catch { return []; }
 }
 function updateHistoryCount() {
-  document.querySelector('#history-count').textContent = savedSearches().length;
+  const count = savedSearches().length;
+  document.querySelector('#history-count').textContent = count;
+  document.querySelector('#clear-log').disabled = count === 0;
 }
 function saveSearch(request, result) {
   const searches = savedSearches();
@@ -173,11 +175,16 @@ function renderResults(result) {
   document.querySelector('#modal-sequence-body').innerHTML = rows;
 }
 document.querySelector('#show-log').addEventListener('click', renderLog);
+const confirmClearModalEl = document.querySelector('#confirm-clear-modal');
+const confirmClearModal = new bootstrap.Modal(confirmClearModalEl);
 document.querySelector('#clear-log').addEventListener('click', () => {
-  if (savedSearches().length && window.confirm('¿Borrar todo el historial de búsquedas?')) {
-    localStorage.removeItem(historyKey);
-    renderLog();
-  }
+  if (savedSearches().length) confirmClearModal.show();
+});
+document.querySelector('#confirm-clear-log').addEventListener('click', () => {
+  localStorage.removeItem(historyKey);
+  renderLog();
+  confirmClearModal.hide();
+  showAlert('Historial de búsquedas eliminado.', 'success');
 });
 updateHistoryCount();
 form.addEventListener('submit', async (event) => {
